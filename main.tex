@@ -1,0 +1,1622 @@
+
+
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{physics}
+\usepackage{geometry}
+\usepackage{bm}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{lipsum}
+\usepackage{siunitx}
+\usepackage{comment}
+
+% Configuring font package last, using reliable font
+\usepackage{mathptmx 
+
+
+
+\geometry{a4paper, margin=1in}
+
+
+
+
+
+
+
+\begin{document}
+
+
+
+
+
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.25\textwidth]{IISER-K_Logo.png}\par\vspace{1cm} % <- Replace logo.png with your actual logo file
+
+    {\scshape\LARGE Indian Institue of Science Education and Reaserch, Kolkata\par}
+    \vspace{1cm}
+    {\scshape\Large Bio Optics and Nano Photonics Lab\par}
+    \vspace{1.5cm}
+
+    {\huge\bfseries Spin-Orbit Interaction in Anisotropic Waveguided Plasmonic Crystals\par}
+    \vspace{2cm}
+
+    {\Large Name: Raj Gaurav Tripathi\par}
+    {\large Roll number.: 22MS215 \par}
+    \vspace{1.5cm}
+
+    {\large Superviser\par}
+    {\large \bfseries Prof. Nirmalya Ghosh\par}
+    \vfill
+    
+
+\begin{abstract}
+This document presents a study of light polarization using Jones and Stokes formalisms, explaining how light interacts with optical elements through effects like diattenuation, retardance, and depolarization. We also explore spin and orbital angular momentum of light and their interaction. Finally, we simulate spin-orbit effects in plasmonic crystals using MATLAB, modeling the forward and inverse spin Hall effects through momentum-resolved Mueller matrix analysis.
+\end{abstract}
+
+    \vfill
+    {\large July 30, 2025\par}
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\section{Mathematical Formulation}
+
+
+
+
+\subsection{ Basic types of polarization: Linear and elliptically polarized waves}
+
+Let a plane monochromatic wave propagate in the positive $z$ direction. Hence the $\vb{E}$ and the $\vb{B}$ fields will oscillate in the $xy$ plane, while the propagation vector $\vb{k}$ will be directed along $z$ (see Fig 1). Since the triplet of vectors $\vb{E}$, $\vb{B}$ and $\vb{k}$ are mutually orthogonal, it suffices to look at only the behavior of vector $\vb{E}$. The wave may be considered as the superposition of two waves with $\vb{E}$ having components along, say, the $x$ and $y$ directions, propagating along $\vb{k}$:
+
+\begin{align}
+    E_x(z,t) &= E_{0x} \exp[i(kz - \omega t)] = a_x \exp[-i\phi_x] \exp[i(kz - \omega t)] \\
+    E_y(z,t) &= E_{0y} \exp[i(kz - \omega t)] = a_y \exp[-i\phi_y] \exp[i(kz - \omega t)]
+\end{align}
+
+The ratio of the complex amplitudes can be written as
+\begin{equation}
+    \frac{E_{0y}}{E_{0x}} = \frac{a_y}{a_x} \exp[-i\delta],
+    \}
+\end{equation}
+where $\delta = \phi_y - \phi_x$ is the phase difference between the orthogonal components. Depending on the value of $\delta$, different polarization states are realized. In order to appreciate this, start with real fields at $z=0$ written as
+\begin{align}
+    E_x(0,t) &= a_x \cos(\omega t + \phi_x), \\
+    E_y(0,t) &= a_y \cos(\omega t + \phi_y). 
+\end{align}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Screenshot_2025-07-14-10-32-33-625_com.xodo.pdf.reader-edit.jpg}
+    \caption*{ Schematics of a plane monochromatic wave with the orientations of the various vectors.}
+\end{figure}
+
+\begin{enumerate}
+    \item If $E_{0y}/E_{0x}$ is real (i.e., $\delta = n\pi, \ n = 0, \pm 1, \pm 2, \dots$), then the resulting electric field is linearly polarized, oscillating along a straight line. The ratio of the components $a_y/a_x$ (in case they are different), along with the sign of $\exp(-i\delta)$, will determine the slope of this straight line.
+
+    \item If $\delta = \pi/2$, then we have right circularly polarized light, while $\delta = -\pi/2$ corresponds to the left circularly polarized light. Right-handed polarization is defined by clockwise rotation of the electric field vector as the wave travels toward the observer.
+
+    \item If the phase difference is not a multiple of $\pi/2$, then in general we have elliptical polarization. In this case $E_{0y}/E_{0x} = \exp(-i\delta)$ has a complex value and $\vb{E}$ rotates around the $z$-axis with the tip describing an ellipse.
+\end{enumerate}
+
+
+
+
+
+
+\subsection{Stokes Parameters and Jones Vectors}
+
+\subsubsection*{Representation of Polarization States of a Monochromatic Wave}
+
+It is clear that the amplitudes \( a_x \) and \( a_y \) cannot be measured directly in any experiment. Only intensities proportional to the squares of these amplitudes can be recorded by a detector. For characterizing the polarization states, Stokes proposed the parameters:
+
+\begin{align*}
+    s_0 &= a_x^2 + a_y^2, \\
+    s_1 &= a_x^2 - a_y^2, \\
+    s_2 &= 2 a_x a_y \cos\delta, \\
+    s_3 &= 2 a_x a_y \sin\delta,
+\end{align*}
+
+where \( \delta = \phi_x - \phi_y \) gives the phase difference between the orthogonal components. Only three Stokes parameters are independent since only three independent quantities, namely \( a_x, a_y \), and \( \delta \), are involved. Indeed, it is easy to verify that
+
+\[
+    s_0^2 = s_1^2 + s_2^2 + s_3^2.
+\]
+
+Use of an analyzer makes it possible to measure the intensities of the two orthogonal polarizations \( a_x^2 \) and \( a_y^2 \). Thus \( s_0 \) is proportional to the intensity of light.
+
+Another useful way to express the polarization state of light is through the \textit{Jones vector}, which expresses the electric field as a column vector:
+
+\[
+    \vb{E} =
+    \begin{pmatrix}
+        E_x \\
+        E_y
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        E_{0x} e^{-i\phi_x} \\
+        E_{0y} e^{-i\phi_y}
+    \end{pmatrix}.
+\]
+
+In such notation, right-handed circular polarization can be expressed as
+
+\[
+    \vb{E}_R =
+    \begin{pmatrix}
+        E_{0x} e^{-i\phi_x} \\
+        E_{0x} e^{-i\phi_x - i\pi/2}
+    \end{pmatrix},
+\]
+
+where \( E_{0y} = E_{0x} \) and \( \phi_y = \phi_x + \pi/2 \). Dividing both sides by the magnitude \( \abs{\vb{E}_R} = \sqrt{2} E_{0x} \), we have
+
+\[
+    \frac{\vb{E}_R}{\abs{\vb{E}_R}} =
+    \frac{1}{\sqrt{2}} e^{-i\phi_x}
+    \begin{pmatrix}
+        1 \\
+        e^{-i\pi/2}
+    \end{pmatrix}.
+\]
+
+Dropping the arbitrary phase, the expression for a right circularly polarized light takes the form
+
+\[
+    \vb{E}_R = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 \\
+        -i
+    \end{pmatrix}.
+\]
+
+In an analogous fashion, left circularly polarized light can be expressed by
+
+\[
+    \vb{E}_L = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 \\
+        i
+    \end{pmatrix}.
+\]
+
+It is easy to verify that a superposition of right and left circularly polarized light leads to linear polarization:
+
+\[
+    \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 \\
+        -i
+    \end{pmatrix}
+    +
+    \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 \\
+        i
+    \end{pmatrix}
+    =
+    \sqrt{2}
+    \begin{pmatrix}
+        1 \\
+        0
+    \end{pmatrix}.
+\]
+
+It is also easy to verify that the left- and right-handed polarizations are mutually orthogonal in the sense that their scalar product vanishes:
+
+\[
+    \vb{E}_R \cdot \vb{E}_L^* =
+    \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 \\
+        -i
+    \end{pmatrix}
+    \cdot
+    \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 \\
+        -i
+    \end{pmatrix}
+    =
+    \frac{1}{2} (1 + i^2) = 0.
+\]
+
+Analogous relations hold for any orthogonally polarized light pair.
+
+\subsubsection*{Measurement of Stokes Parameters}
+
+It is now clear that pure polarization states do not exist. Nor do purely unpolarized states exist. There is always some residual polarization due to reflection and scattering. It thus follows that Stokes parameters must be expressed in terms of mean intensities. That is, they must be described in terms of partially polarized light.
+
+Let the two orthogonal components be given by
+
+\begin{align*}
+    E_x^{(r)} &= A_x \cos(\omega t + \phi_x), \\
+    E_y^{(r)} &= A_y \cos(\omega t + \phi_y),
+\end{align*}
+
+where \( A_x, A_y, \phi_x, \phi_y \) are slowly varying functions of time, and the superscript \( (r) \) denotes the real field components. Defining the phase difference \( \delta = \phi_x - \phi_y \), the Stokes parameters can be written as:
+
+\begin{align*}
+    s_0 &= \langle A_x^2 \rangle + \langle A_y^2 \rangle, \\
+    s_1 &= \langle A_x^2 \rangle - \langle A_y^2 \rangle, \\
+    s_2 &= 2 \langle A_x A_y \cos \delta \rangle, \\
+    s_3 &= 2 \langle A_x A_y \sin \delta \rangle.
+\end{align*}
+
+The various Stokes parameters can be measured in terms of different intensities. We now show how this can be done using complex notation:
+
+\begin{align*}
+    E_x &= A_x e^{-i(\omega t + \phi_x)}, \\
+    E_y &= A_y e^{-i(\omega t + \phi_y)}.
+\end{align*}
+
+Let a retardation plate producing retardation \( \phi \) and a polarizer be placed in the path of the beam. Let the principal direction of the polarizer be at an angle \( \theta \) with the \( x \)-axis. The projection of the E-field on the principal direction is:
+
+\[
+    E(\theta, \phi) = E_x \cos\theta + E_y e^{-i\phi} \sin\theta.
+\]
+
+The corresponding intensity is:
+
+\begin{align*}
+    I(\theta, \phi) &= \langle E E^* \rangle \\
+    &= \langle E_x E_x^* \rangle \cos^2 \theta + \langle E_y E_y^* \rangle \sin^2 \theta \\
+    &\quad + \left( \langle E_x E_y^* \rangle e^{i\phi} + \langle E_y E_x^* \rangle e^{-i\phi} \right) \cos\theta \sin\theta \\
+    &= I_x \cos^2 \theta + I_y \sin^2 \theta + \langle A_x A_y \rangle \cos(\delta - \phi) \sin 2\theta,
+\end{align*}
+
+where \( I_{x,y} = \langle A_{x,y}^2 \rangle \).
+
+A set of six measurements—\( I(0, 0), I(\pi/2, 0), I(\pi/4, 0), I(3\pi/4, 0), I(\pi/4, \pi/2), I(3\pi/4, \pi/2) \) suffices to determine the Stokes parameters:
+
+\begin{align*}
+    s_0 &= I(0, 0) + I(\pi/2, 0), \\
+    s_1 &= I(0, 0) - I(\pi/2, 0), \\
+    s_2 &= I(\pi/4, 0) - I(3\pi/4, 0), \\
+    s_3 &= I(\pi/4, \pi/2) - I(3\pi/4, \pi/2).
+\end{align*}
+
+When any of the parameters \( s_1, s_2 \), or \( s_3 \) has a nonzero value, the light is (at least partially) polarized. The intensity of the polarized portion is:
+
+\[
+    I_{\text{polarized}} = \sqrt{s_1^2 + s_2^2 + s_3^2}, \quad
+    I_{\text{unpolarized}} = s_0 - \sqrt{s_1^2 + s_2^2 + s_3^2}.
+\]
+
+The degree of polarization is given by:
+
+\[
+    P = \frac{\sqrt{s_1^2 + s_2^2 + s_3^2}}{s_0}.
+\]
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection*{Jones Vector Representation of Pure Polarization States}
+
+In the classical description, the electric field vector of any transverse electromagnetic plane monochromatic wave of frequency \( \omega \), propagating along the \( z \)-direction, can be expressed in terms of the two orthogonal components (\( x \) and \( y \); note that other orthonormal coordinates are possible) in the right-handed Cartesian coordinate system as
+
+\[
+\vb{E}(z, t) =
+\begin{pmatrix}
+E_{0x} \cos(kz - \omega t - \delta_x) \\
+E_{0y} \cos(kz - \omega t - \delta_y)
+\end{pmatrix}
+\]
+
+Accordingly, the Jones vector is defined as
+
+\[
+\vb{E} =
+\begin{pmatrix}
+E_x \\
+E_y
+\end{pmatrix}
+=
+\begin{pmatrix}
+E_{0x} e^{-i\delta_x} \\
+E_{0y} e^{-i\delta_y}
+\end{pmatrix}
+\]
+
+Depending on the relative amplitudes and phases of the two orthogonal components of the electric field, the Jones vectors corresponding to the different pure polarization states are listed in standard references (e.g., for linear horizontal (H), vertical (V), \( +45^\circ \) (P), \( -45^\circ \) (M), and circular left (L) and right (R) polarizations).
+
+The intensity of a fully polarized wave characterized by the Jones vector is given by
+
+\[
+I = I_x + I_y = \frac{1}{2} (E_{0x}^2 + E_{0y}^2) = \frac{1}{2} (\vb{E} \cdot \vb{E}^*)
+\]
+
+with
+
+\[
+k = (n' + i n'') \frac{\omega}{c}
+\]
+
+where \( k \) is the complex propagation constant, \( c \) is the speed of light in vacuum, and \( n' \) and \( n'' \) are the real and imaginary parts of the refractive index, determining the speed of light and absorption in the medium, respectively.
+
+The polarization of the wave is defined by the shape of the trajectory described by \( \vb{E} \) in the \( xy \)-plane. This shape depends on the ratio of the amplitudes and the phase difference \( \delta \), defined as
+
+\[
+\tan \nu = \frac{E_{0y}}{E_{0x}}, \qquad \delta = \delta_y - \delta_x
+\]
+
+To determine the ellipticity \( \epsilon \), a quarter-wave plate (QWP) is inserted in the beam path with its slow axis oriented at the azimuth \( \alpha \). Due to the \( 90^\circ \) phase shift introduced by the QWP, the initial elliptical polarization state is transformed into a linear one, oriented at \( \alpha + \epsilon \) from the \( x \)-reference axis.
+
+This vectorial description of polarization states enables a matrix-based treatment of how light interacts with any optical element. A general optical element, such as a retardation plate or a partial polarizer, can be represented by a \( 2 \times 2 \) complex matrix. This is expressed as
+
+\[
+\vb{E}' = J \vb{E}, \quad
+\begin{pmatrix}
+E'_x \\
+E'_y
+\end{pmatrix}
+=
+\begin{pmatrix}
+J_{11} & J_{12} \\
+J_{21} & J_{22}
+\end{pmatrix}
+\begin{pmatrix}
+E_x \\
+E_y
+\end{pmatrix}
+\]
+
+where \( J \) is the Jones matrix of the optical medium, and \( \vb{E} \), \( \vb{E}' \) are the input and output Jones vectors of light, respectively.
+
+
+
+
+
+
+
+
+
+\subsection{Partially Polarized States}
+
+The previous discussion dealt with completely polarized waves. In such an idealized situation, the transverse components of the optical field (\( E_x \) and \( E_y \)) describe a perfect polarization ellipse (or some special form of an ellipse, such as a circle or a straight line, depending upon the relative amplitudes and phases) in the \( xy \)-plane. Note that the time scale at which the light vector traces out an instantaneous ellipse is of the order of \( 10^{-15} \) seconds, a period too short to allow direct observation of the polarization ellipse.
+
+These limitations force us to consider an alternative description of polarized light in which only average or measured quantities—intensities rather than instantaneous field values—enter. This leads to an experimental definition of the degree of polarization (DOP) of a light beam:
+
+\[
+\text{DOP} = \frac{I_{\text{max}} - I_{\text{min}}}{I_{\text{max}} + I_{\text{min}}}
+\]
+
+For such partially polarized states, the motion of the electric field in the \( xy \)-plane is no longer a perfect ellipse, but rather a somewhat disordered one. It is implicitly assumed in this description that the light polarization may be defined at any instant but varies over time scales much shorter than the integration time of the detector. As a result, the detector measures temporal averages of the intensities, generated sequentially by different fully polarized states.
+
+To describe such states, we introduce the concept of the \textit{coherency matrix}, which accounts for the time-averaged properties of the transverse field components. The definition of DOP will be introduced via this formalism, and it will be shown that the four measurable Stokes parameters follow from combinations of the elements of the coherency matrix.
+
+\subsubsection{Concept of the 2 × 2 Coherency Matrix}
+
+The coherency matrix (also known as the matrix of polarization) incorporates partial polarization effects by taking the temporal average of the outer product of the Jones vector with its Hermitian conjugate. It is defined as
+
+\[
+\bm{\phi} = \langle \vb{E} \otimes \vb{E}^\dagger \rangle =
+\begin{pmatrix}
+\langle E_x E_x^* \rangle & \langle E_x E_y^* \rangle \\
+\langle E_y E_x^* \rangle & \langle E_y E_y^* \rangle
+\end{pmatrix}
+=
+\begin{pmatrix}
+\phi_{xx} & \phi_{xy} \\
+\phi_{yx} & \phi_{yy}
+\end{pmatrix}
+\]
+
+where \( \langle \cdot \rangle \) denotes a temporal (or ensemble) average, \( \otimes \) is the tensor (Kronecker) product, \( \vb{E}^* \) is the complex conjugate, and \( \vb{E}^\dagger \) is the Hermitian transpose of the Jones vector \( \vb{E} \).
+
+The coherency matrix has two key properties: it is Hermitian (\( \bm{\phi} = \bm{\phi}^\dagger \)) and non-negative (\( \bm{\phi} \geq 0 \)). Every \( 2 \times 2 \) matrix satisfying these conditions represents a physically realizable polarization state. The non-negativity condition can also be expressed as:
+
+\[
+\text{tr}(\bm{\phi}) > 0, \quad \det(\bm{\phi}) \geq 0
+\]
+
+The trace of the coherency matrix corresponds to the total intensity of the light and is experimentally measurable as the sum of the two orthogonal component intensities. This satisfies the first non-negativity condition. The second condition, \( \det(\bm{\phi}) \geq 0 \), is related to the definition of the degree of polarization, as it constrains the level of coherence between field components.
+
+The off-diagonal elements of \( \bm{\phi} \) account for the time-averaged correlation between the field components. For a fully coherent source (where the phase difference is constant), the determinant vanishes: \( \det(\bm{\phi}) = 0 \), corresponding to a completely polarized wave. For partially coherent (or incoherent) sources, \( \det(\bm{\phi}) > 0 \), indicating partial or complete depolarization.
+
+The determinant of the coherency matrix thus provides a measure of the unpolarized component of intensity. Specifically, the square root of the determinant quantifies the natural intensity component independent of the polarizer orientation.
+
+The degree of polarization can also be expressed in terms of the coherency matrix as:
+
+\[
+\text{DOP} = \frac{I_{\text{pol}}}{I_{\text{tot}}} = \sqrt{1 - \frac{4 \det(\bm{\phi})}{\left[\text{tr}(\bm{\phi})\right]^2}}
+\]
+
+Here, \( I_{\text{pol}} \) is the intensity of the polarized component, and \( I_{\text{tot}} \) is the total intensity. This theoretical definition of DOP is consistent with the earlier empirical definition and confirms that fully polarized light corresponds to \( \det(\bm{\phi}) = 0 \) (\( \text{DOP} = 1 \)), while partially polarized states correspond to \( \det(\bm{\phi}) > 0 \) (\( \text{DOP} < 1 \)).
+
+For polarization-preserving (non-depolarizing) transformations, the coherency matrix transforms as
+
+\[
+\bm{\phi}' = J \bm{\phi} J^\dagger
+\]
+
+where \( J \) is the Jones matrix of the optical system. This mapping preserves purity, i.e., pure states (\( \det(\bm{\phi}) = 0 \)) remain pure after transformation.
+
+Depolarizing transformations, involving mixed (partially polarized) states with \( \det(\bm{\phi}) > 0 \), are treated using the Stokes–Mueller formalism.
+
+
+
+
+
+
+
+\subsubsection{Stokes parameters: Intensity-based representation of
+polarization states}
+
+Following the presentation above, polarized states are not characterized in terms of well-determined field amplitudes, but rather by intensities (the time average of the square of the field amplitudes). These measurable intensities are grouped in a \(4 \times 1\) vector (four-row, single-column array) known as the Stokes vector \( \vb{S} \), which is sufficient to characterize any polarization state of light (pure, partial or unpolarized). These are defined as
+
+\[
+\vb{S} =
+\begin{bmatrix}
+I \\
+Q \\
+U \\
+V
+\end{bmatrix}
+=
+\begin{bmatrix}
+\langle E_x E_x^* \rangle + \langle E_y E_y^* \rangle \\
+\langle E_x E_x^* \rangle - \langle E_y E_y^* \rangle \\
+\langle E_x E_y^* \rangle + \langle E_y E_x^* \rangle \\
+i(\langle E_y E_x^* \rangle - \langle E_x E_y^* \rangle)
+\end{bmatrix}
+=
+\begin{bmatrix}
+\langle E_{0x}^2 + E_{0y}^2 \rangle \\
+\langle E_{0x}^2 - E_{0y}^2 \rangle \\
+\langle 2 E_{0x} E_{0y} \cos \delta \rangle \\
+\langle 2 E_{0x} E_{0y} \sin \delta \rangle
+\end{bmatrix}
+\]
+
+where once again, \( \langle \cdot \rangle \) denotes temporal average and the electric field components \( E_{0x} \) and \( E_{0y} \) and the corresponding phase difference \( \delta = \delta_y - \delta_x \) are also temporally averaged over the measurement time.
+
+Thus these parameters can be directly determined by the following six intensity measurements \( I \) performed with ideal polarizers: \( I_H \), horizontal linear polarizer (0°); \( I_V \), vertical linear polarizer (90°); \( I_P \), 45° linear polarizer; \( I_M \), 135° (-45\degree\) linear polarizer; \( I_R \), right circular polarizer; and \( I_L \), left circular polarizer.
+
+\[
+\vb{S} =
+\begin{bmatrix}
+I \\
+Q \\
+U \\
+V
+\end{bmatrix}
+=
+\begin{bmatrix}
+I_H + I_V \\
+I_H - I_V \\
+I_P + I_M \\
+I_R - I_L
+\end{bmatrix}
+\]
+
+For totally polarized states defined by Jones vectors of the form given earlier, the corresponding Stokes vectors are
+
+\[
+\vb{S} =
+\begin{pmatrix}
+E_{0x}^2 + E_{0y}^2 \\
+E_{0x}^2 - E_{0y}^2 \\
+2 E_{0x} E_{0y} \cos \delta \\
+2 E_{0x} E_{0y} \sin \delta
+\end{pmatrix}
+\]
+
+Using this formalism, the following polarization parameters of any light beam are defined:
+
+\begin{itemize}
+  \item Net degree of polarization:
+  \[
+  \text{DOP} = \frac{\sqrt{Q^2 + U^2 + V^2}}{I}
+  \]
+  \item Degree of linear polarization:
+  \[
+  \text{DOP}_\text{linear} = \frac{\sqrt{Q^2 + U^2}}{I}
+  \]
+  \item Degree of circular polarization:
+  \[
+  \text{DOP}_\text{circular} = \frac{V}{I}
+  \]
+\end{itemize}
+
+In order to understand this, we relate the Stokes vector elements with the elements of the coherency matrix as
+
+\[
+\vb{S} =
+\begin{bmatrix}
+I \\
+Q \\
+U \\
+V
+\end{bmatrix}
+=
+\begin{bmatrix}
+\langle E_x E_x^* \rangle + \langle E_y E_y^* \rangle \\
+\langle E_x E_x^* \rangle - \langle E_y E_y^* \rangle \\
+\langle E_x E_y^* \rangle + \langle E_y E_x^* \rangle \\
+i (\langle E_y E_x^* \rangle - \langle E_x E_y^* \rangle)
+\end{bmatrix}
+=
+\begin{bmatrix}
+\phi_{xx} + \phi_{yy} \\
+\phi_{xx} - \phi_{yy} \\
+\phi_{xy} + \phi_{yx} \\
+i(\phi_{yx} - \phi_{xy})
+\end{bmatrix}
+\]
+
+In the literature, the coherency matrix is also sometimes written as a \( 4 \times 1 \) vector (four-row, single-column array, analogous to the Stokes vector) and is denoted as the coherency vector \( \vb{L} \). Thus, \( \vb{S} \) and \( \vb{L} \) are related by the \( 4 \times 4 \) matrix \( A \) as
+
+\[
+\vb{S} = A
+\begin{bmatrix}
+\phi_{xx} \\
+\phi_{xy} \\
+\phi_{yx} \\
+\phi_{yy}
+\end{bmatrix}
+= A \vb{L}, \quad
+A =
+\begin{pmatrix}
+1 & 0 & 0 & 1 \\
+1 & 0 & 0 & -1 \\
+0 & 1 & 1 & 0 \\
+0 & -i & i & 0
+\end{pmatrix}
+\]
+
+By performing simple algebraic manipulations using the above, we can see that the determinant of the coherency matrix can be written in terms of the Stokes parameters as
+
+\[
+\det(\bm{\phi}) = \frac{1}{4} \left( I^2 - (Q^2 + U^2 + V^2) \right)
+\]
+
+Thus, the non-negativity condition of the coherency matrix is equivalent to the condition that the DOP should not exceed unity:
+
+\[
+\det(\bm{\phi}) = \frac{1}{4} \left( I_{\text{tot}}^2 - I_{\text{pol}}^2 \right)
+\]
+
+
+
+\subsubsection*{The Poincar´e sphere representation of Stokes polarization parameters}
+The Poincaré sphere is a very convenient geometrical representation of all possible polarization states. The intensity-normalized Stokes parameters (\( q, u, v \)) are used as coordinate axes to form the Poincaré sphere. The intensity-normalized form of the Stokes vector is
+
+\[
+\vb{S}_T = I 
+\begin{pmatrix}
+1, \frac{Q}{I}, \frac{U}{I}, \frac{V}{I}
+\end{pmatrix}
+= I(1, q, u, v) = I(1, \vb{s}_T)
+\]
+
+This is illustrated in a typical Poincaré sphere plot. In this space, the DOP is nothing else but the distance of the representative point from the origin.
+
+
+\subsection{Jones from Mular}
+
+The Jones matrix \( J \) is generally complex and contains eight independent parameters (real and imaginary parts of each of the four matrix elements), or seven parameters if the absolute phase is excluded. Rotation (by an angle \( \alpha \)) of any optical element can also be conveniently modeled by the rotational transformation of Jones matrices \( J \to J' \) via the usual coordinate rotation matrix \( R(\alpha) \):
+\[
+R(\alpha) = 
+\begin{pmatrix}
+\cos \alpha & \sin \alpha \\
+- \sin \alpha & \cos \alpha
+\end{pmatrix}, 
+\quad J' = R^{-1}(\alpha) J R(\alpha).
+\]
+
+Analogous to the Jones matrix, a \( 4 \times 4 \) matrix \( M \), known as the Mueller matrix (developed by Hans Mueller in the 1940s), describes the transformation of the Stokes vector (polarization state) in its interaction with a medium:
+\[
+\vb{S}_0 = M \vb{S}_i,
+\]
+\[
+\begin{pmatrix}
+I_o \\
+Q_o \\
+U_o \\
+V_o
+\end{pmatrix}
+=
+\begin{pmatrix}
+m_{11} & m_{12} & m_{13} & m_{14} \\
+m_{21} & m_{22} & m_{23} & m_{24} \\
+m_{31} & m_{32} & m_{33} & m_{34} \\
+m_{41} & m_{42} & m_{43} & m_{44}
+\end{pmatrix}
+\begin{pmatrix}
+I_i \\
+Q_i \\
+U_i \\
+V_i
+\end{pmatrix},
+\]
+with \( \vb{S}_i \) and \( \vb{S}_o \) being the Stokes vectors of the input and the output light, respectively.
+
+The \( 4 \times 4 \) real Mueller matrix \( M \) has at most sixteen independent parameters (or fifteen if the absolute intensity is excluded), including depolarization information. We note below the other important necessary condition for physical realizability of a Mueller matrix:
+\[
+\text{tr}(M M^T) = \sum_{i,j=1}^4 m_{ij}^2 \leq 4 m_{11}^2,
+\]
+where the equality and the inequality signs correspond to nondepolarizing and depolarizing systems, respectively.
+
+For the special case of a nondepolarizing linear optical system (a deterministic system, satisfying the equality in both matrix conditions), a one-to-one correspondence between the real \( 4 \times 4 \) Mueller matrix \( M \) and the complex \( 2 \times 2 \) Jones matrix \( J \) can be derived via the coherency matrix formalism. Such a relationship can be obtained by using the following set of equations describing the transformation of the input Jones vector (\( \vb{E}_i \)), coherency vector (\( \vb{L}_i \)), and Stokes vector (\( \vb{S}_i \)):
+\[
+\vb{E}_0 = J \vb{E}_i, \quad \vb{L}_0 = W \vb{L}_i, \quad \vb{S}_0 = M \vb{S}_i.
+\]
+Here, \( \vb{E}_0, \vb{L}_0, \vb{S}_0 \) are the output Jones, coherency and Stokes vectors, respectively, after medium interaction. The matrix \( W \) is a \( 4 \times 4 \) matrix that describes the transformation of the coherency vector in its interaction with the medium and is known as the Wolf matrix.
+
+Using the previously defined matrices and by performing simple algebraic manipulations, we can show that the Wolf matrix \( W \) and the Mueller matrix \( M \) are related to the Jones matrix \( J \) as
+\[
+W = J \otimes J^*, \quad M = A (J \otimes J^*) A^{-1},
+\]
+where \( A \) is the \( 4 \times 4 \) matrix defined earlier, relating the Stokes vector and the coherency vector.
+
+Thus, every Jones matrix (that can only describe a special case of a nondepolarizing optical system) can be transformed into an equivalent Mueller matrix (and a Wolf matrix); however, the converse is not necessarily true. The resulting nondepolarizing Mueller matrix contains seven independent parameters and is accordingly termed a Mueller-Jones matrix. The examples of such Mueller-Jones matrices are the matrices for retardance (both linear and circular) and diattenuation (linear and circular) effects.
+
+We can determine the analogous rotational transformation of the Mueller-Jones matrix \( M \to M' \) as
+\[
+M' = T^{-1}(\alpha) M T(\alpha), \quad
+T(\alpha) =
+\begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & \cos 2\alpha & \sin 2\alpha & 0 \\
+0 & -\sin 2\alpha & \cos 2\alpha & 0 \\
+0 & 0 & 0 & 1
+\end{pmatrix},
+\]
+where the rotation matrix \( T(\alpha) \) implies rotation of the Stokes vector in the polarization state space (i.e., in the Poincaré sphere) rather than in the coordinate space. This also implies that a rotation of the field vector by an angle \( \alpha \) leads to a rotation of \( 2\alpha \) of the Stokes vector (around the \( v \)-axis describing circular polarization) in the Poincaré sphere.
+
+
+
+\subsection{Matrix of interactions}
+It is clear that in this geometric representation, the equatorial circle of the sphere represents the set of linear polarization states (with zero ellipticity); the poles are the points of ellipticity \( \mp 1 \), representing right (north pole) and left (south pole) circular polarization states, respectively.
+
+
+
+
+The three basic medium polarization properties are retardance, diattenuation and depolarization. The two polarization effects retardance and diattenuation arise from differences in the refractive indices for different polarization states, and they are often described in terms of ordinary and extraordinary axes and indices. Differences in the real parts of refractive indices result in linear and circular birefringence (retardance), whereas differences in the imaginary parts can cause linear and circular dichroism (which manifests itself as diattenuation, described below).
+
+Mathematically, retardance and birefringence are related simply via
+\[
+R = k L \Delta n,
+\]
+where \( R \) is the retardance, \( k \) is the wave vector of the light, \( L \) is the pathlength in the medium and \( \Delta n \) is the difference in the real parts of the refractive index known as birefringence.
+
+Linear retardance, denoted \( \delta \), is therefore the relative phase shift between orthogonal linear polarization components. The output state of polarization depends upon the magnitude of linear retardance and orientation angle \( \theta \) of the principal axis of the retarder with respect to the input linear polarization direction.
+
+The diattenuation \( D \) of an optical element is a measure of the differential attenuation of orthogonal polarization states for both linear and circular polarization. This is analogous to dichroism, which is the differential absorption of two orthogonal polarization states (linear or circular); however, diattenuation is more general, since the differential attenuation need not be caused by absorption alone, rather, it can be the result of various other effects (e.g., scattering, reflection, refraction, etc.). Linear diattenuation is defined as differential attenuation of two orthogonal linear polarization states (\( D = 1 \) for ideal polarizer).
+
+If an incident state is completely polarized and the exiting state after interaction with the sample has a degree of polarization less than unity, then the sample possesses the depolarization property. Depolarization is usually encountered due to multiple scattering of photons (although randomly oriented uniaxial birefringent domains can also depolarize light); incoherent addition of amplitudes and phases of the scattered field results in scrambling of the output polarization state.
+
+
+
+
+
+
+\subsubsection{Jones matrices for nondepolarizing interactions: Examples and parametric representation}
+
+\subsubsubsection*{Retardance (birefringence):} Linear retardance originates from the difference in the real part of the refractive index between two orthogonal linear polarization states and accordingly leads to a difference in phase between these states while propagating through an anisotropic medium exhibiting this effect. The Jones matrix for this effect can be written as
+
+\[
+J_{\text{LR}} =
+\begin{pmatrix}
+e^{i\phi_x} & 0 \\
+0 & e^{i\phi_y}
+\end{pmatrix}
+\]
+
+The resulting magnitude of linear retardance is
+
+\[
+\delta = \frac{2\pi}{\lambda}(n_y - n_x)L,
+\]
+
+where \( n_x \) and \( n_y \) are the real parts of the refractive indices for \( x \)- and \( y \)-polarized light, respectively, and \( L \) is the pathlength. The rotated Jones matrix becomes
+
+\[
+J_{\text{LR}}(\delta, \theta) = R^{-1}(\theta) J_{\text{LR}} R(\theta)
+\]
+
+\[
+=
+\begin{pmatrix}
+e^{i\phi_x} \cos^2\theta + e^{i\phi_y} \sin^2\theta & (e^{i\phi_x} - e^{i\phi_y}) \cos\theta \sin\theta \\
+(e^{i\phi_x} - e^{i\phi_y}) \cos\theta \sin\theta & e^{i\phi_x} \sin^2\theta + e^{i\phi_y} \cos^2\theta
+\end{pmatrix}
+\]
+
+where \( R(\theta) \) is the rotation matrix defined as
+
+\[
+R(\theta) =
+\begin{pmatrix}
+\cos\theta & \sin\theta \\
+-\sin\theta & \cos\theta
+\end{pmatrix}
+\]
+
+For example, the Jones matrix of a quarter-wave plate (\( \delta = \pi/2 \)) with its principal axis aligned along the laboratory \( x \)-axis (\( \theta = 0^\circ \)) is
+
+\[
+\begin{pmatrix}
+1 & 0 \\
+0 & i
+\end{pmatrix}
+\]
+
+\textit{Circular retardance (\( \delta_C \)):} This originates from the difference in the real part of the refractive index between two orthogonal circular polarization states (LCP/RCP) and is manifested as the rotation of the plane of polarization (optical rotation \( \psi \)), with
+
+\[
+\delta_C = \frac{2\pi}{\lambda}(n_L - n_R)L
+\]
+
+The Jones matrix corresponding to this effect is a pure rotation matrix:
+
+\[
+J_{\text{CR}}(\psi) =
+\begin{pmatrix}
+\cos\psi & \sin\psi \\
+-\sin\psi & \cos\psi
+\end{pmatrix}
+\]
+
+\subsubsubsection*{Diattenuation (dichroism):} As previously mentioned, diattenuation arises due to differential attenuation of orthogonal polarization states (both linear and circular) and originates from differences in the imaginary part of the refractive index for orthogonal polarization states. The Jones matrix for the linear diattenuation effect can be written as
+
+\[
+J_{\text{LD}} =
+\frac{1}{\sqrt{a^2 + b^2}}
+\begin{pmatrix}
+a & 0 \\
+0 & b
+\end{pmatrix}
+\]
+
+The magnitude of linear diattenuation (\( -1 \leq D \leq +1 \)) is
+
+\[
+D = \frac{a^2 - b^2}{a^2 + b^2}
+\]
+
+The general form of the diattenuator oriented at an angle \( \theta \) is obtained as
+
+\[
+J_{\text{LD}}(D, \theta) = R^{-1}(\theta) J_{\text{LD}} R(\theta)
+\]
+
+
+\subsubsection{ Standard Mueller matrices for basic interactions (diattenuation, retardance, depolarization): Examples and
+parametric representation}
+
+The Stokes-Mueller formalism has certain advantages. First of all, it can encompass any polarization state of light, whether it is natural, totally or partially polarized (can thus deal with both polarizing and depolarizing optical systems). Second, the Stokes vectors and Mueller matrices can be measured with relative ease using intensity-measuring conventional (square-law detector) instruments, including most polarimeters, radiometers and spectrometers.
+
+Polarimetric elements are called homogeneous if they exhibit two fully polarized orthogonal eigenstates, i.e., two polarization states that are transmitted without alteration and that do not interfere with each other. In practice, such light states are linearly polarized along two perpendicular directions, or circularly polarized and rotating in opposite senses. The normalized Stokes vectors \( \mathbf{S}_1 \) and \( \mathbf{S}_2 \) of such orthogonal states are of the form
+
+\[
+\mathbf{S}_1^T = (1, \mathbf{s}^T), \quad \mathbf{S}_2^T = (1, -\mathbf{s}^T)
+\]
+
+with \( \| \mathbf{s} \| = 1 \) as these states are fully polarized.
+
+\subsubsubsection*{Homogeneous retarders:} 
+The elements exhibiting the retardance effects are characterized by two orthogonal eigenpolarization states, each of which is transmitted without modification. They transmit both eigenstates with the same intensity coefficients, but different phases. A pure retarder can be described geometrically as rotation in the space of Stokes vectors. Mathematically, the Mueller matrix \( M_R \) of the retarder can be written as
+
+\[
+M_R =
+\begin{pmatrix}
+1 & \mathbf{0}^T \\
+\mathbf{0} & m_R
+\end{pmatrix}
+\]
+
+where \( \mathbf{0} \) represents the null vector and the \( 3 \times 3 \) submatrix \( m_R \) is a rotation matrix in the Poincaré \((q, u, v)\) space. The action of a retarder on an arbitrary incident Stokes vector \( \mathbf{S} \) is a rotation of its representative point on the Poincaré sphere, described by \( m_R \).
+
+For linear retarders with eigenstates linearly polarized along \( \theta \) and \( \theta + 90^\circ \) azimuths, the form of the Mueller matrix \( M_{LR}(\tau, \delta, \theta) \) can be obtained by applying the transformation of Eq. (6.34) on the Jones matrix of a retarder:
+
+\[
+M_{LR}(\tau, \delta, \theta) = \tau
+\begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & \cos^2 2\theta + \sin^2 2\theta \cos\delta & \cos 2\theta \sin 2\theta (1 - \cos\delta) & -\sin 2\theta \sin\delta \\
+0 & \cos 2\theta \sin 2\theta (1 - \cos\delta) & \sin^2 2\theta + \cos^2 2\theta \cos\delta & \cos 2\theta \sin\delta \\
+0 & \sin 2\theta \sin\delta & -\cos 2\theta \sin\delta & \cos\delta
+\end{pmatrix}
+\]
+
+where \( \tau \) is the intensity transmission for incident unpolarized light, and can be taken to be unity if the optical material is nonabsorbing (lossless).
+
+A straightforward calculation indeed shows that two fully polarized orthogonal eigenstates (linearly polarized states with azimuths \( \theta \) and \( \theta + 90^\circ \)) are transmitted unchanged:
+
+\[
+M_{LR}(\tau, \delta, \theta)
+\begin{pmatrix}
+1 \\
+\pm \cos 2\theta \\
+\pm \sin 2\theta \\
+0
+\end{pmatrix}
+=
+\tau
+\begin{pmatrix}
+1 \\
+\pm \cos 2\theta \\
+\pm \sin 2\theta \\
+0
+\end{pmatrix}
+\]
+
+We now consider circular retarders, i.e., elements for which the eigenpolarizations are the opposite circular polarization states. The Mueller matrices of such elements are of the form
+
+\[
+M_{CR}(\psi) = \tau
+\begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & \cos 2\psi & \sin 2\psi & 0 \\
+0 & -\sin 2\psi & \cos 2\psi & 0 \\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\]
+
+When a linearly polarized wave interacts with a circular retarder, its polarization remains linear, but it is rotated by an angle \( \psi \) (known as optical rotation). The effect may also be interpreted as a rotation of the incident linearly polarized Stokes vector \( \mathbf{S} \) in the Poincaré sphere by an amount equal to the circular retardance \( \delta_C = 2\psi \).
+
+\subsubsubsection*{Homogeneous diattenuators:} For a diattenuating system, the output intensity depends on the input polarization state. If we consider an intensity normalized input Stokes vector \( \mathbf{S}_{\text{in}} \) such that
+
+\[
+\mathbf{S}_{\text{in}}^\mathrm{T} = (1, \mathbf{s}^\mathrm{T}), \quad \text{with } \| \mathbf{s} \| = \mathrm{DOP} \leq 1,
+\]
+
+the output intensity (i.e., the first component of \( \mathbf{S}_{\text{out}} \)) is simply given by
+
+\[
+I_{\text{out}} = m_{11}(1 + \mathbf{D} \cdot \mathbf{s}).
+\]
+
+This output intensity reaches its maximum (minimum) value \( I_{\max} \) (\( I_{\min} \)) when the scalar product \( \mathbf{D} \cdot \mathbf{s} \) is maximum (minimum) under the constraint \( \| \mathbf{s} \| = \mathrm{DOP} \leq 1 \), i.e., when \( \mathbf{s} = \pm \frac{\mathbf{D}}{\|\mathbf{D}\|} \). We thus obtain:
+
+\[
+\mathbf{S}_{\max}^\mathrm{T} =
+\left(1, \frac{\mathbf{D}^\mathrm{T}}{\| \mathbf{D} \|} \right), \quad I_{\max} = m_{11}(1 + \| \mathbf{D} \|),
+\]
+\[
+\mathbf{S}_{\min}^\mathrm{T} =
+\left(1, -\frac{\mathbf{D}^\mathrm{T}}{\| \mathbf{D} \|} \right), \quad I_{\min} = m_{11}(1 - \| \mathbf{D} \|),
+\]
+
+from which we immediately obtain the scalar diattenuation:
+
+\[
+D = \frac{I_{\max} - I_{\min}}{I_{\max} + I_{\min}} = \| \mathbf{D} \|.
+\]
+
+The diattenuator vector \( \mathbf{D} \) thus defines both the scalar diattenuation \( D \) and the polarization states transmitted with the highest (or the lowest) intensity.
+
+The corresponding Mueller matrix is then given by
+
+\[
+M_D = \tau
+\begin{pmatrix}
+1 & \mathbf{D}^\mathrm{T} \\
+\mathbf{D} & m_D
+\end{pmatrix}, \quad \text{where } m_D =
+\sqrt{1 - D^2}\, \mathbb{I}_3 + (1 - \sqrt{1 - D^2}) \, \mathbf{D} \mathbf{D}^\mathrm{T}.
+\]
+
+Once again, \( \tau \) is the intensity transmission for incident unpolarized light.
+
+For any propagation direction, the imaginary part of the wave vector (corresponding to the imaginary part of the refractive index \( n'' \)) may take two different values, \( n''_L \) and \( n''_H \); the former, corresponding to the lowest absorption, is valid for a wave linearly polarized at azimuth \( \theta \), and the latter for the orthogonal polarization, at \( \theta + 90^\circ \). The linear (scalar) dichroism is then defined as
+
+\[
+\Delta n'' = n''_H - n''_L > 0.
+\]
+
+For a parallel slab of thickness \( L \), the intensity transmissions for the two eigenpolarizations are, respectively,
+
+\[
+T_{\max} = \exp(-2n''_L L), \quad T_{\min} = \exp(-2n''_H L),
+\]
+
+yielding a scalar diattenuation:
+
+\[
+D = \frac{T_{\max} - T_{\min}}{T_{\max} + T_{\min}} = \tanh(\Delta n'' L).
+\]
+
+The Mueller matrix for a linear diattenuator \( M_{\text{LD}}(\tau, D, \theta) \) can be written in the following symmetric form:
+
+\[
+\frac{\tau}{2}
+\begin{pmatrix}
+1 & D \cos 2\theta & D \sin 2\theta & 0 \\
+D \cos 2\theta & \cos^2 2\theta + \sqrt{1 - D^2} \sin^2 2\theta & (1 - \sqrt{1 - D^2}) \cos 2\theta \sin 2\theta & 0 \\
+D \sin 2\theta & (1 - \sqrt{1 - D^2}) \cos 2\theta \sin 2\theta & \sin^2 2\theta + \sqrt{1 - D^2} \cos^2 2\theta & 0 \\
+0 & 0 & 0 & \sqrt{1 - D^2}
+\end{pmatrix},
+\]
+
+implying that the maximum and minimum intensity transmittances are obtained for linearly polarized states with azimuths \( \theta \) and \( \theta + 90^\circ \).
+
+Similarly, for circular diattenuators, the general form of the Mueller matrix is
+
+\[
+M_{\text{CD}}(\tau, D) = \frac{\tau}{2}
+\begin{pmatrix}
+1 & 0 & 0 & D \\
+0 & \sqrt{1 - D^2} & 0 & 0 \\
+0 & 0 & \sqrt{1 - D^2} & 0 \\
+D & 0 & 0 & 1
+\end{pmatrix},
+\]
+
+and of course in this case there is no need to define any partial azimuth.
+
+
+
+
+
+\subsubsubsection*{Depolarizers:} A depolarizer is an object that reduces the degree of polarization of the incoming light. The simplest depolarizers are those for which the Mueller matrix \( M_\Delta \) is diagonal:
+
+\[
+M_\Delta = \tau
+\begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & a & 0 & 0 \\
+0 & 0 & b & 0 \\
+0 & 0 & 0 & c
+\end{pmatrix},
+\]
+
+with absolute values of \( a, b, c \) smaller than unity. If so, any incident Stokes vector \( \mathbf{S}_{\text{i}} \) of the form
+
+\[
+\mathbf{S}_{\text{i}}^\mathrm{T} = I(1, q, u, v)
+\]
+
+is transformed into
+
+\[
+\mathbf{S}_{\text{out}}^\mathrm{T} = \tau I(1, aq, bu, cv),
+\]
+
+which gives the output degree of polarization
+
+\[
+\mathrm{DOP}_{\text{out}} =
+\sqrt{a^2 q^2 + b^2 u^2 + c^2 v^2} \leq \sqrt{q^2 + u^2 + v^2} = \mathrm{DOP}_{\text{in}}.
+\]
+
+
+
+\newpage
+
+\section{Angular Momentum of Light}
+\subsection{Spin and Orbital Angular momentum of light, and their Interaction}
+In optics, the angular momentum (AM) of light is related to the circular (elliptical) polarization of light waves or the helical phase fronts (vortex) of optical beams. In the classical electromagnetic description, the former is associated with the rotation of the electric field vector around the propagation axis and is referred to as the spin angular momentum (SAM); the latter is associated with rotation of the phase structure of a light beam and is known as orbital angular momentum (OAM).
+
+The fact that light carries a linear momentum equivalent to \( \hbar \mathbf{k} \) per photon (where \( \mathbf{k} = \frac{2\pi}{\lambda} \) is the wave vector) was experimentally demonstrated by Beth, who observed that circularly polarized light could exert a mechanical torque on a birefringent plate. The angular momentum associated with left/right circular polarization is described as \( \pm\hbar \) spin per photon and is termed the spin angular momentum (SAM) of light.
+
+In 1992, Allen et al. theoretically demonstrated that light beams with helical phase fronts characterized by a phase dependence \( \sim \exp(i\ell\phi) \) (where \( \phi \) is the azimuthal angle and \( \ell \in \mathbb{Z} \)) carry an orbital angular momentum (OAM) of \( \ell\hbar \) per photon. These beams have a phase dislocation on the beam axis and are referred to as optical vortices. In general, any beam with inclined phase fronts may carry OAM about the beam propagation axis. Laguerre-Gaussian (LG) modes having azimuthal amplitude dependence \( \sim \exp(i\ell\phi) \) are eigenmodes of the angular momentum operator and carry \( \ell\hbar \) OAM per photon.
+
+In atomic physics, we expect \( \mathbf{J} = \mathbf{L} + \mathbf{S} \), where \( \mathbf{L} \) is the orbital angular momentum and \( \mathbf{S} \) is the spin. The important questions are:
+
+\begin{enumerate}
+    \item Is such a physically unambiguous separation of SAM and OAM possible for any arbitrary optical vector (EM) field?
+    \item Are SAM and OAM separately physically observable?
+\end{enumerate}
+
+In other words, can we define general prescriptions to evaluate (and observe) the angular momentum of a field from the phase and amplitude structure of the vector field?
+
+At the most fundamental level, in order to have a component of angular momentum along the propagation direction \( z \), there must be components of the electric and/or magnetic fields in the \( z \)-direction. Thus, a circularly polarized plane wave cannot carry any angular momentum. This appears to contradict the experimental results of Beth mentioned earlier.
+
+The resolution lies in recognizing that a plane wave is an idealization. Real optical beams are limited in spatial extent either by the beams themselves or by the finite measurement aperture, which leads to a nonzero longitudinal component of the field. In such realistic cases, the EM field is not purely transverse. This longitudinal component, arising from the radial field gradient near the beam edges or aperture, results in a net angular momentum of \( \pm\hbar \) per photon (for left/right circular polarization) when integrated across the beam cross-section.
+
+For OAM, beams exhibit helical phase fronts; the number of intertwined helices and their handedness are determined by the magnitude and sign of \( \ell \). An EM field transverse to these helical phase fronts will inherently have longitudinal components.
+
+These physical arguments can be formalized using the paraxial approximation
+
+
+The general form of an electric field in Cartesian coordinates for the simplest paraxial waves (propagating along the \( z \)-direction) can be written as:
+\[
+\mathbf{E}(x, y, z) = \mathbf{F}(x, y, z) \, e^{ikz}
+\]
+Here, \( \mathbf{F}(x, y, z) \) is the slowly varying spatial envelope. Accordingly, the field \( \mathbf{F} \) satisfies the paraxial wave equation:
+\[
+2ik \frac{\partial \mathbf{F}}{\partial z} = -\left( \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} \right)\mathbf{F}
+\]
+
+The \( z \)-component of the angular momentum density \( j_z \), defined via the momentum density \( \mathbf{p} = \varepsilon_0 \mathbf{E} \times \mathbf{B} \) and angular momentum density \( \mathbf{j} = \mathbf{r} \times \mathbf{p} = \varepsilon_0 \mathbf{r} \times (\mathbf{E} \times \mathbf{B}) \), can now be determined for the paraxial electromagnetic wave.
+
+The total linear and angular momentum of the field are given by:
+\[
+\mathbf{P} = \int \varepsilon_0 (\mathbf{E} \times \mathbf{B}) \, d\mathbf{r}, \quad \mathbf{J} = \int \varepsilon_0 \, \mathbf{r} \times (\mathbf{E} \times \mathbf{B}) \, d\mathbf{r}
+\]
+
+The \( z \)-component of the angular momentum density becomes:
+\[
+j_z(x, y, z) = \frac{\omega \varepsilon_0}{2i} \left[ \mathbf{E}^* \cdot (\hat{\mathbf{r}} \times \nabla) \mathbf{E} \right]_z + \frac{\omega \varepsilon_0}{2i} \left[ \mathbf{E}^* \times \mathbf{E} \right]_z
+\]
+which, under the paraxial approximation, simplifies to:
+\[
+j_z = \frac{\omega \varepsilon_0}{2i} \left[ F_x^* \left( x \frac{\partial}{\partial y} - y \frac{\partial}{\partial x} \right) F_x + F_y^* \left( x \frac{\partial}{\partial y} - y \frac{\partial}{\partial x} \right) F_y \right] + \frac{\omega \varepsilon_0}{2i} \left( F_x^* F_y - F_y^* F_x \right)
+\]
+
+This expression clearly shows that the first term is associated with the transverse spatial distribution of the field (its amplitude and phase), and is identified as the **orbital angular momentum (OAM) density**, while the second term, directly proportional to the circular polarization component of the field, is identified as the **spin angular momentum (SAM) density**.
+
+The extrinsic angular momentum cannot have a contribution from SAM, since SAM is purely intrinsic in nature, but it can include a contribution from **extrinsic OAM**. When integrated over the beam profile, the total angular momentum along the \( z \)-direction is:
+\[
+J_z = \int \varepsilon_0 \, \mathbf{r} \times (\mathbf{E} \times \mathbf{B}) \, dx\,dy
+\]
+
+If the coordinate origin is displaced by \( \mathbf{r}_0 = (r_{0x}, r_{0y}) \), the change in the angular momentum component becomes:
+\[
+\Delta J_z = r_{0x} \varepsilon_0 \int ( \mathbf{E} \times \mathbf{B} )_y \, dx\,dy + r_{0y} \varepsilon_0 \int ( \mathbf{E} \times \mathbf{B} )_x \, dx\,dy
+\]
+
+The angular momentum is **intrinsic** if \( \Delta J_z = 0 \) for all values of \( r_{0x} \) and \( r_{0y} \). This condition is met if the total transverse momenta vanish:
+\[
+\int ( \mathbf{E} \times \mathbf{B} )_x \, dx\,dy = 0, \quad \int ( \mathbf{E} \times \mathbf{B} )_y \, dx\,dy = 0
+\]
+
+For cylindrically symmetric paraxial beams, such as Laguerre-Gaussian (LG) beams with any azimuthal index \( \ell \), the transverse momenta are identically zero. Hence, the OAM carried by such beams is **intrinsic**.
+
+
+
+
+
+\newpage
+
+\begin{comment}
+% Deriving the orbital angular momentum
+\subsection*{Derivation of Orbital Angular Momentum of Light from Maxwell's Equations}
+
+The goal is to derive the orbital angular momentum (OAM) of light for a wave with the phase structure \( e^{il\phi} \), where \( \phi \) is the azimuthal angle and \( l \) is the OAM quantum number, starting from Maxwell's equations.
+
+% Setting up Maxwell's equations
+\subsection{Maxwell's Equations}
+Maxwell's equations in free space (SI units) are:
+\begin{align}
+    \div \mathbf{E} &= 0, \\
+    \div \mathbf{B} &= 0, \\
+    \curl \mathbf{E} &= -\pdv{\mathbf{B}}{t}, \\
+    \curl \mathbf{B} &= \mu_0 \epsilon_0 \pdv{\mathbf{E}}{t}, \quad \text{where} \quad \mu_0 \epsilon_0 = \frac{1}{c^2}.
+\end{align}
+For monochromatic fields, assume:
+\[
+\mathbf{E}(\mathbf{r}, t) = \mathrm{Re} \left[ \mathbf{E}(\mathbf{r}) e^{-i\omega t} \right], \quad \mathbf{B}(\mathbf{r}, t) = \mathrm{Re} \left[ \mathbf{B}(\mathbf{r}) e^{-i\omega t} \right].
+\]
+The spatial amplitudes satisfy:
+\begin{align}
+    \div \mathbf{E} &= 0, \\
+    \div \mathbf{B} &= 0, \\
+    \curl \mathbf{E} &= i\omega \mathbf{B}, \\
+    \curl \mathbf{B} &= -i \frac{\omega}{c^2} \mathbf{E}.
+\end{align}
+
+% Defining the field with helical phase
+\subsection{Field with \( e^{il\phi} \) Phase}
+Consider a paraxial beam propagating along the \( z \)-axis in cylindrical coordinates \( (r, \phi, z) \):
+\[
+\mathbf{E} = E_0 f(r, z) e^{il\phi} e^{ikz} \hat{x},
+\]
+where \( k = \frac{\omega}{c} \), and \( f(r, z) \) is a radial profile (e.g., Gaussian). Compute the magnetic field:
+\[
+\mathbf{B} = \frac{1}{i\omega} \curl \mathbf{E}.
+\]
+In the paraxial limit:
+\[
+\curl \mathbf{E} \approx ik \hat{z} \times \mathbf{E}, \quad \mathbf{B} \approx \frac{1}{c} \hat{z} \times \mathbf{E} = \frac{E_0}{c} f e^{il\phi} e^{ikz} \hat{y}.
+\]
+
+% Computing angular momentum density
+\subsection{Angular Momentum Density}
+The angular momentum density is:
+\[
+\mathbf{j} = \mathbf{r} \times \mathbf{g}, \quad \mathbf{g} = \epsilon_0 \mathbf{E} \times \mathbf{B}.
+\]
+Time-averaged momentum density:
+\[
+\langle \mathbf{g} \rangle = \frac{\epsilon_0}{2} \mathrm{Re} (\mathbf{E}^* \times \mathbf{B}).
+\]
+For \( \mathbf{E} = E_0 f e^{il\phi} e^{ikz} \hat{x} \), \( \mathbf{B} = \frac{E_0}{c} f e^{il\phi} e^{ikz} \hat{y} \):
+\[
+\mathbf{E}^* \times \mathbf{B} = \frac{|E_0|^2 |f|^2}{c} \hat{z}, \quad \langle \mathbf{g} \rangle = \frac{\epsilon_0 |E_0|^2 |f|^2}{2c} \hat{z}.
+\]
+Thus:
+\[
+\langle j_z \rangle = r \langle g_\phi \rangle = 0.
+\]
+This suggests OAM requires the azimuthal phase.
+
+% Incorporating phase gradient for OAM
+\subsection{Phase Gradient and OAM}
+The phase of the scalar field \( u = f(r, z) e^{il\phi} e^{ikz} \) is:
+\[
+\phi_{\text{phase}} = l\phi + kz + \arg(f).
+\]
+\[
+\nabla \phi_{\text{phase}} = \frac{l}{r} \hat{\phi} + k \hat{z}.
+\]
+The Poynting vector:
+\[
+\langle \mathbf{S} \rangle \propto |f|^2 \left( \frac{l}{r} \hat{\phi} + k \hat{z} \right), \quad \langle \mathbf{g} \rangle \propto |f|^2 \left( \frac{l}{r} \hat{\phi} + k \hat{z} \right).
+\]
+\[
+\langle j_z \rangle = r \langle g_\phi \rangle \propto l |f|^2.
+\]
+
+% Calculating total OAM
+\subsection{Total Orbital Angular Momentum}
+The total OAM per unit length:
+\[
+L_z = \int_0^{2\pi} \int_0^\infty l |f|^2 r \, dr \, d\phi = 2\pi l \int_0^\infty |f|^2 r \, dr.
+\]
+This is proportional to \( l \times (\text{energy per unit length}) / \omega \), or per photon, \( l \hbar \).
+
+% Concluding the derivation
+\subsection{Conclusion}
+The field \( e^{il\phi} \) carries OAM proportional to \( l \), derived from the azimuthal momentum induced by the helical phase.
+\end{comment}
+
+\newpage
+
+\subsection{Spin-Orbit Interaction (SOI) of Light}
+
+In the quantum mechanical description, SOI of electrons is described as a relativistic correction to the Schrödinger equation in the presence of an external field, which eventually leads to a spin-dependent term in the Hamiltonian. This additional spin-dependent energy term is referred to as the spin-orbit energy, as it results from an interaction of the spin with the magnetic field that is experienced by the moving electron. 
+
+The universal nature of this effect, dealing with coupling of spin and orbital degrees of freedom of spinning particles, leads to its manifestation in diverse fields of physics and at different scales, ranging from stellar objects to fundamental particles.
+
+The evolution of polarized light in trajectory (which may be set by a number of processes involving light-matter interaction, e.g., propagation through inhomogeneous isotropic or anisotropic media) may thus mimic the evolution of a massless spin-1 particle (photon) in an external scalar field. As we will describe, the SOI effect can indeed be produced by a variety of light-matter interactions, e.g., by a tight focusing of light beams, reflection/refraction at dielectric interfaces, high numerical aperture imaging, scattering from micro-/nanosystems, propagation through inhomogeneous anisotropic media, and so forth.
+
+SOI of light has an inherent geometrical origin and is thus intimately related to the generation of geometric phase of light. Generation of geometric phases and subsequent conservation of total angular momentum of light is inherent to all the optical SOI phenomena.
+
+Before we proceed further on defining the geometric phase of light, we note two important features of geometric phases in the context of SOI of light. First, generation of the azimuthal geometric phase (for spherically or cylindrically symmetric systems) is the origin of the spin-to-orbital angular momentum conversion (and the subsequent generation of spin-induced vortices). 
+
+When we deal with finite beams (such as the fundamental or higher-order Gaussian beams, which have a spread in $\vec{k}$-vector space), the different $\vec{k}$ vectors of the beam acquire slightly different geometrical phases. The resulting $\vec{k}$-gradient of the geometric phase eventually leads to the polarization (the intrinsic SAM) or the intrinsic OAM-dependent shift in the trajectory of the beam (or the center of gravity of the beam). 
+
+Next, it is this second effect that is analogous to the splitting of the energy levels of doubly degenerated bands for spin-up and spin-down electrons, as a consequence of SOI (the spin-orbit energy). Here, the SOI (or OOI) of light increases the degeneracy in the spatial modes (spatial distribution) between the opposite circular polarization (intrinsic SAM) or the optical vortex (intrinsic OAM) states. This can also be treated as the dynamical manifestation of geometric phases.
+
+
+
+\subsection{Geometric Phase of Light}
+
+The \emph{geometric phase}, as its name suggests, is independent of the optical path length and is determined solely by the geometry, or more specifically by the topology of the evolution of the electromagnetic wave. This phase is intimately connected to the change in the polarization state of the electromagnetic wave when it undergoes evolution in an inhomogeneous isotropic or anisotropic medium.
+
+There are two types of geometric phase:
+
+\begin{itemize}
+    \item \textbf{The Spin Redirection Berry Phase}: This arises from a parallel transport of the wave field under continuous variation of the direction of propagation of the wave. In this case, the wave vector $\vec{k}$ (representing the direction of propagation of the wave) changes smoothly (adiabatically) so that in the local reference frame attached to the wave, the state of polarization of the wave does not change. When the wave completes a full cyclic evolution (in the $\vec{k}$-space), it acquires an additional phase factor independent of the path length. This is manifested as a change in the direction of the polarization (rotation of the polarization vector or the polarization ellipse) of the wave when observed from a global reference frame.
+
+    It is convenient to represent such adiabatic evolution processes of polarized waves in the momentum space ($\vec{k}$-space), where the direction of propagation of the wave is represented by the three Cartesian components of the wave vector $(k_x, k_y, k_z)$ in the $\vec{k}$-sphere (which is the parameter space here with $k_x, k_y, k_z$ as the three axes). The spherical angles of the $\vec{k}$-sphere are represented as $(\theta, \phi)$, and accordingly the direction of the wave momentum with respect to the laboratory coordinate frame $(X, Y, Z)$ can be represented as
+\[
+(k_x, k_y, k_z) = k (\sin \theta \cos \phi, \sin \theta \sin \phi, \cos \theta)
+\]
+in the global laboratory frame $(X, Y, Z)$, it is rotated by an angle $\Theta$. The corresponding closed loop at the $\vec{k}$-sphere spans a surface that subtends a solid angle (the area enclosed by the projection of the loop onto the $\vec{k}$-sphere) at the center of the sphere, which is exactly equal to $\Theta$. This solid angle can be calculated as
+\[
+\Theta = \int_0^\theta \sin \theta \, d\theta \int_0^{2\pi} d\phi = 2\pi (1 - \cos \theta).
+\]
+
+The rotation $\Theta$ of the linear polarization vector due to one full cyclic evolution of the wave in the helical waveguide can be interpreted as an \emph{optical rotation} effect. However, the waveguide has no local intrinsic anisotropies or circular birefringence. The observed circular birefringence thus appears to be a geometrical effect.
+
+It appears that while propagating through the helical waveguide, the constituent left- and right-circular polarization modes of the linearly polarized wave have acquired equal and opposite phases $(\pm \Theta)$, which do not originate from any intrinsic anisotropies and are thus purely geometric in nature. This is the so-called \emph{spin redirection Berry phase}. The spin redirection Berry phase is determined by the solid angle subtended by the closed loop in the $\vec{k}$-sphere (in the momentum domain representation).
+
+    
+    \item \textbf{Pancharatnam-Berry Phase}: This arises for a wave propagating in a fixed direction (fixed $\vec{k}$ vector) but undergoing a continuous change in the state of polarization while propagating through an anisotropic (birefringent) medium. When the wave completes a full cyclic evolution in the polarization state space (closed loop in the Poincaré sphere), it acquires an additional geometrical phase factor. The corresponding geometric
+    phase will be half of this solid angle
+\end{itemize}
+
+
+\subsection*{Geometric Phase Associated with Mode Transformation}
+
+As we now know, the intrinsic orbital angular momentum (OAM) of light is associated with the mode structure of a light beam (the transverse distribution of the field amplitude and phase). Mode transformation should also lead to the generation of both variants of the geometric phase. Waves propagate in a fixed direction (fixed $\vec{k}$ vector) but undergo a continuous mode transformation. The geometry of the path can be represented in the mode space, as was done in the polarization state space for SAM-carrying beams.
+
+Laguerre-Gaussian (LG) modes follow from the solutions to the paraxial wave equation in cylindrical coordinates, and a general LG mode ($\text{LG}_p^l$) is characterized by radial and azimuthal indices $p$ and $l$, respectively, carrying $l\hbar$ OAM per photon. The Hermite-Gaussian (HG) modes, on the other hand, are solutions to the paraxial wave equation in rectangular coordinates (represented by $\text{HG}_{nm}$) and do not carry OAM as such. The order of these modes is generally given by $N = 2p + |l| = n + m$.
+
+We note that, for modes with order $N = 1$, in-phase superposition of left-handed ($l = +1, p = 0$) and right-handed ($l = -1, p = 0$) helical LG modes form an HG mode with indices $m = 1, n = 0$ ($\text{HG}_{10}$). Similarly, the $\text{HG}_{01}$ mode can be obtained by superposition of left and right LG modes with a phase difference of $\pi$ between them:
+\[
+\text{HG}_{10} = \text{LG}_0^{+1} + \text{LG}_0^{-1}, \quad \text{HG}_{01} = \text{LG}_0^{+1} - \text{LG}_0^{-1}.
+\]
+Conversely, the first-order LG modes may also be obtained by superposition of orthogonal HG modes:
+\[
+\text{LG}_0^{+1} = \text{HG}_{10} + i\text{HG}_{01}, \quad \text{LG}_0^{-1} = \text{HG}_{10} - i\text{HG}_{01}.
+\]
+
+This set of equations provides the basis for an analogy between the Jones vector representation of linear and circular polarization states and those of the first-order HG and LG modes. If we represent the states of the $\text{HG}_{10}$ and $\text{HG}_{01}$ modes as $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$ and $\begin{bmatrix} 0 \\ 1 \end{bmatrix}$ (the equivalent representation of horizontal and vertical linear polarization states), the corresponding orthogonal LG modes (with $l = \pm 1$) can be represented as $\frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ \pm i \end{bmatrix}$ (equivalent representation of left and right circular polarization).
+
+In fact, we can decompose any arbitrarily oriented HG mode (determined by the orientation of the phase structure and intensity distribution) and LG modes using the basis of the $\text{HG}_{10}$ and $\text{HG}_{01}$ modes, just like any arbitrarily oriented linear polarization state and circular (elliptical) polarization states can be decomposed using horizontal and vertical linear polarization basis. This yields a one-to-one correspondence between the first-order modes with the polarization state of light.
+
+In the orbital Poincaré sphere of the first-order modes, the poles correspond to right- and left-handed LG modes ($l = \mp 1$, north and south poles), and the equator region corresponds to HG modes oriented at different angles. Here also, for one full cyclic evolution of the $\vec{k}$ vector (corresponding to one period of the trajectory of the helically wound optical fiber), although the mode structure does not change in the local coordinate frame attached with the beam, in the global laboratory frame it is rotated by an angle $\Theta$. The corresponding closed loop at the $\vec{k}$-sphere and the solid angle subtended by this at the center of the $\vec{k}$-sphere can also be shown to be equal to $\Theta$.
+
+If we consider the evolution of the $\text{HG}_{10}$ mode (as an example), the output rotated (by an angle $\Theta$) mode structure after one full cyclic evolution may also be interpreted as
+\[
+\left| \text{HG}_{\text{out}} \right\rangle = \frac{1}{\sqrt{2}} \left( e^{i\Theta} \left| \text{LG}_0^{+1} \right\rangle + e^{-i\Theta} \left| \text{LG}_0^{-1} \right\rangle \right).
+\]
+
+In analogy with polarization, this may be termed the \emph{OAM redirection Berry phase}. The other variant of the geometric phase arises when the laser beam propagates in a fixed direction (fixed $\vec{k}$ vector) but undergoes a continuous mode transformation (the Pancharatnam-Berry equivalent geometric phase for mode transformation).
+
+Also, when a pair of cylindrical lenses is kept at $2f$ distance away with their focal lines parallel, they act as a $\pi/2$ mode converter.
+
+
+
+
+\newpage
+
+\section{Momentum domain polarization probing of forward and
+inverse SHE of leaky modes in plasmonic crystals}
+What we did:
+\begin{itemize}
+    \item Designed and fabricated a plasmonic crystal supporting leaky guided modes with exceptional polarization sensitivity
+    \item Developed a novel dark-field Fourier-domain Mueller-matrix microscope for complete momentum-space polarization analysis
+    \item Observed and quantitatively characterized:
+    \begin{itemize}
+        \item Efficient spin-to-orbit angular momentum conversion
+        \item Both forward and inverse manifestations of the spin Hall effect
+    \end{itemize}
+    \item Demonstrated Fano resonance enhancement of spin-dependent phenomena
+\end{itemize}
+
+\begin{comment}
+\begin{abstract}
+We report the simultaneous observation of both forward and inverse photonic Spin Hall effects (SHE) in a geometrically tailored anisotropic waveguided plasmonic crystal system, enabled through the excitation of leaky hybridized quasi-guided modes. These modes appear in the far-field Fourier (momentum) domain as circular ring-like intensity patterns, with spin–orbit interaction (SOI) effects producing distinct polarization-dependent azimuthal lobes. Utilizing a darkfield Fourier-domain polarization Mueller matrix platform, we experimentally reveal input spin (circular polarization)-dependent deflection trajectories of the leaky quasi-guided modes (forward SHE) and, conversely, wavevector-controlled spin selection (inverse SHE). These effects are encoded in specific Mueller matrix elements, allowing their interpretation as manifestations of geometrical circular anisotropy. Furthermore, resonance-enabled enhancement and tunability of these effects are demonstrated via spectral Fano-type resonances. The far-field realization of spin-directional excitation, combined with Mueller matrix-based interpretation and resonance-based control of SOI effects, paves the way for advanced spin-orbit photonic applications using plasmonic–photonic crystal systems.
+
+\end{abstract}
+\end{comment}
+
+
+
+
+
+\subsection{Discussion in brief}
+
+
+
+\subsubsection*{Plasmonic Photonic Crystal}
+A plasmonic photonic crystal is a periodic structure—often consisting of metallic nanoparticles or nano-holes—that supports surface plasmon polariton (SPP) modes. These SPPs arise from collective oscillations of electrons at the interface between a metal and a dielectric material.
+
+In our work, we fabricated a one-dimensional gold (Au) grating with a period $d \approx \SI{550}{\nano\meter}$, width $\approx \SI{90}{\nano\meter}$, and height $\approx \SI{20}{\nano\meter}$, deposited on an indium-tin-oxide (ITO) waveguide ($\sim \SI{190}{\nano\meter}$) on glass.
+
+Under TM-polarized excitation (electric field perpendicular to the grating), a hybrid mode between the surface plasmon and TM waveguide is generated. This coupling gives rise to both a broad and a narrow mode, resulting in a Fano resonance. On the other hand, TE-polarized excitation (electric field parallel to the grating) excites the TE waveguide continuum, which exhibits a Fano-like response as well.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{IMG_20250715_121945.jpg}}  \caption{Representative SEM images displaying the gold grating structure, illustrating the orientations of both TM-y and TE-x polarizations.}
+    \label{fig:sem}
+\end{figure}
+
+\subsubsection*{Fano Resonance Spectrum}
+The scattering intensity of the structure was measured as a function of wavelength $\lambda$, under TM (red dashed curve) and TE (solid blue curve) polarization. Notably, there is a pronounced asymmetric lineshape overlapping in the 460--580\,\si{\nano\meter} range, with a steep transition occurring near $\lambda_{0} \approx \SI{500}{\nano\meter}$. Around this wavelength, we observe significant changes in both amplitude and phase.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.7\textwidth]{spectrum}
+    \caption{Scattering intensity spectrum showing Fano resonance features for TM and TE polarizations.}
+    \label{fig:spectrum}
+\end{figure}
+
+\subsubsection*{Anisotropy Parameters of the Plasmonic Crystal}
+To quantify the polarization-sensitive behavior of the crystal, we define two key anisotropy parameters:
+
+\begin{itemize}
+    \item \textbf{Linear diattenuation}, $d_{\mathrm{wpc}}$: This parameter represents the difference in transmission or reflection amplitude between TE and TM polarized modes.
+    \item \textbf{Linear retardance}, $\delta_{\mathrm{wpc}}$: This is the phase difference accumulated by the TE and TM components as they propagate through or reflect from the structure.
+\end{itemize}
+
+Linear diattenuation influences the measured intensity, while linear retardance leads to changes in polarization state, for instance from linear to elliptical. These two parameters together quantify how strongly anisotropic the plasmonic crystal is.
+
+\subsubsection*{Guided and Leaky Quasi-guided Modes}
+In a dielectric waveguide, light can be confined and guided along the plane by total internal reflection, forming bound modes that do not radiate into the far field. However, when the waveguide's perfect symmetry is disrupted—such as by adding a grating, a metallic layer, or limiting the waveguide thickness—the guided modes become \emph{quasi-guided}. These modes remain mostly confined but leak a small portion of light into free space, allowing far-field observation of spin-dependent phenomena.
+
+\subsubsection*{Dark-Field Fourier-Domain Mueller Microscopy}
+We implemented a dark-field microscopy configuration with high numerical-aperture (NA 0.8--0.92) condensers, enabling collection of scattered (leaky) light while blocking the unscattered central beam, thereby achieving high contrast.
+
+A polarization-state generator (PSG) and analyzer (PSA) were used to create six input and six output polarization states, resulting in 36 intensity images. These measurements were combined to reconstruct the full $4\times 4$ Mueller matrix $M(k_x, k_y)$ as a function of in-plane wavevector.
+
+By performing Fourier-plane imaging, we mapped each in-plane wavevector to the associated leakage rings, corresponding to the quasi-guided-mode radiation in momentum space.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{IMG_20250715_122516.jpg}
+    \caption{Schematic of the dark-field Fourier-domain Mueller microscopy setup.}
+    \label{fig:mueller}
+\end{figure}
+
+\subsubsection*{Spin--Orbit Interaction: Spin to Orbital Conversion}
+We observed four-lobed intensity patterns in the Stokes vector elements $S_1$ and $S_2$ for circular polarization input, and similar four-lobed features in $S_3$ for linear horizontal and vertical inputs. This phenomenon arises due to an azimuthally varying geometric phase introduced by tight focusing, which converts part of the spin angular momentum (SAM) into orbital angular momentum (OAM). In other words, the circular polarization spins are partially converted to vortex beams.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.7\textwidth]{stokes_patterns}
+    \caption{Four-lobed Stokes patterns in k-space demonstrating spin-to-orbital conversion.}
+    \label{fig:stokes}
+\end{figure}
+
+\subsubsection*{Spin Hall Effects of Light}
+\textbf{Forward Spin Hall Effect}
+When using left- and right-circularly polarized (LCP and RCP) inputs, we detected scattering primarily on opposite sides of the ring at azimuthal angles $\pm \phi$. This directional scattering corresponds to a nonzero Mueller matrix element $M_{14}(\phi)$, which varies as $\sin 2\phi$. This effect demonstrates a direct mapping from spin to scattering direction—"spin $\rightarrow$ direction."
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.7\textwidth]{forward_she}
+    \caption{Forward spin Hall effect showing directional scattering for LCP and RCP inputs.}
+    \label{fig:forward_she}
+\end{figure}
+
+\textbf{Inverse Spin Hall Effect of Light}
+Interestingly, even when inputting unpolarized light, the scattered output exhibited circular polarization: right-circular polarization (RCP) at $+\phi$ and left-circular (LCP) at $-\phi$. This behavior manifests as a nonzero $M_{41}(\phi)$ element in the Mueller matrix, which also follows a $\sin 2\phi$ dependence. It underscores the reciprocity: the direction of scattering determines the spin—"direction $\rightarrow$ spin."
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.7\textwidth]{inverse_she}
+    \caption{Inverse spin Hall effect showing polarization-resolved scattering pattern.}
+    \label{fig:inverse_she}
+\end{figure}
+
+
+
+
+% Previous sections remain unchanged until...
+
+\subsubsection*{Fano Resonance Enhanced Effects}
+We observed that all spin-orbit interaction (SOI) effects - including both the spin Hall effect of light (SHEL) and spin-to-orbit conversion - were significantly stronger at the resonance wavelength $\lambda \approx \SI{530}{\nano\meter}$. This enhancement occurs because both the diattenuation and retardance parameters reach their maximum values at the Fano resonance condition. As a result, the characteristic azimuthal lobes in the scattering patterns and polarization-dependent features showed markedly increased intensity.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{s3_maps.png}
+    \caption{Stokes vector element $S_3$ in $k$-space for unpolarized (U), left-circularly polarized (LCP) and right-circularly polarized (RCP) input at \SI{530}{\nano\meter}}
+    \label{fig:s3_maps}
+\end{figure}
+
+\subsubsection*{Theoretical Framework}
+To validate our experimental observations, we developed a comprehensive Mueller-matrix model that accounts for:
+
+\begin{enumerate}[label=(\roman*)]
+    \item The effects of tight focusing, which introduces azimuthally varying linear diattenuation and retardance
+    \item The anisotropic response of the waveguide-plasmonic crystal (WPC) structure
+\end{enumerate}
+
+The system is described by two key matrix components:
+\begin{align}
+    M_f(d_f,\delta_f,\varphi) &: \text{Azimuthal linear diattenuating retarder} \\
+    M_{\mathrm{wpc}}(d_{\mathrm{wpc}}, \delta_{\mathrm{wpc}}, 0) &: \text{WPC anisotropic response}
+\end{align}
+
+The total system response is given by their product:
+\begin{equation}
+    M(\varphi) = M_f(d_f,\delta_f,\varphi)\cdot M_{\mathrm{wpc}}(d_{\mathrm{wpc}},\delta_{\mathrm{wpc}},0)
+\end{equation}
+
+This model predicts that the characteristic $\sin2\varphi$ dependence of the $M_{14}$ and $M_{41}$ Mueller matrix elements emerges only when both diattenuation and retardance are non-zero, in agreement with our experimental observations.
+
+\subsubsection*{Theoretical Validation Results}
+Our theoretical framework successfully reproduced all key experimental findings:
+\begin{itemize}
+    \item The $M_{14}$ element behavior corresponding to the forward spin Hall effect
+    \item The $M_{41}$ element behavior corresponding to the inverse spin Hall effect
+    \item The complete azimuthal phase evolution observed in all Stokes parameters ($S_1$, $S_2$, $S_3$)
+\end{itemize}
+
+The physical origin of these effects can be understood as:
+\begin{itemize}
+    \item The tight focusing configuration imposes a $\varphi$-dependent geometric phase
+    \item The grating's fixed anisotropy selectively couples to TE and TM waveguide modes, creating phase and amplitude differences
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{mueller_results.png}
+    \caption{Comparison between experimental measurements and theoretical predictions of Mueller matrix elements}
+    \label{fig:mueller_results}
+\end{figure}
+
+\subsubsection*{Conclusion}
+Our combined use of plasmonic photonic crystals, Fourier-domain Mueller matrix microscopy, and polarization-resolved measurements reveals rich spin--orbit coupling phenomena. Not only is spin angular momentum converted into orbital structure, but the interplay also leads to spin-selective scattering (forward spin Hall effect) and direction-mediated generation of circular polarization (inverse spin Hall effect). These findings deepen our understanding of light--matter interaction in structured optical materials and may find future applications in polarization-controlled photonics.
+
+
+
+
+\vspace{1.5cm}
+
+\subsection{Modeling}
+\begin{itemize}
+    \item $M_f$: Derived theoretically using Debye–Wolf theory, modeling tight focusing as an azimuthal linear diattenuator in the momentum domain.
+    \item $M_{\text{wpc}}$: Measured experimentally via 36 polarization-resolved measurements, analyzed to extract Fano resonance-induced anisotropy parameters.
+    \item $M$: Computed as the matrix product $M_f \times M_{\text{wpc}}$, simulating the combined effect of focusing and WPC interaction, visualized in Figures to show spin–orbit interaction (SOI) effects.
+\end{itemize}
+
+In the simulation, the total Mueller matrix is modeled as the product of two components: the focusing-induced Mueller matrix $M_f$ and the WPC-induced Mueller matrix $M_g$.
+
+The focusing matrix $M_f$ represents an azimuthally varying linear diattenuator, taking the form:
+\[
+M_f =
+\begin{pmatrix}
+1 & d_f \cos 2\phi & d_f \sin 2\phi & 0 \\
+d_f \cos 2\phi & \cos^2 2\phi + x_f \sin^2 2\phi & (1 - x_f) \cos 2\phi \sin 2\phi & 0 \\
+d_f \sin 2\phi & (1 - x_f) \cos 2\phi \sin 2\phi & \sin^2 2\phi + x_f \cos^2 2\phi & 0 \\
+0 & 0 & 0 & x_f
+\end{pmatrix}
+\]
+
+The WPC Mueller matrix $M_g$ is experimentally determined for a configuration where the grating axis aligns with the horizontal polarizer direction:
+\[
+M_g =
+\begin{pmatrix}
+1 & d_{\text{wpc}} & 0 & 0 \\
+d_{\text{wpc}} & 1 & 0 & -\sin(\delta_{\text{wpc}}) \\
+0 & 0 & \sqrt{1 - d_{\text{wpc}}^2} \cos(\delta_{\text{wpc}}) & 0 \\
+0 & \sin(\delta_{\text{wpc}}) & 0 & \cos(\delta_{\text{wpc}})
+\end{pmatrix}
+\]
+
+The final Mueller matrix $M = M_f \cdot M_g$ captures the combined effect of spin-orbit interaction (SOI) induced by tight focusing and the anisotropic response of the WPC.
+
+
+
+\subsubsection{Matlab Codes}
+\lstset{ %
+  language=Matlab,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+\begin{lstlisting}[caption={MATLAB code to generate Figure S1 and Figure S2}]
+% Generate Mueller matrix maps for tight focusing (Mf) and combined system (Mf * Mwpc)
+
+% Grid setup
+N = 100;
+kx = linspace(-1, 1, N);
+ky = linspace(-1, 1, N);
+[KX, KY] = meshgrid(kx, ky);
+K = sqrt(KX.^2 + KY.^2);
+PHI = atan2(KY, KX);
+
+% Annular mask for NA range 0.8 to 0.92
+mask = (K >= 0.8) & (K <= 0.92);
+
+% Parameters for tight focusing (Mf)
+df = 0.1; 
+xf = sqrt(1 - df^2);
+
+% Mf computation
+M11_f = ones(size(K));
+M12_f = df * cos(2*PHI);
+M13_f = df * sin(2*PHI);
+M14_f = zeros(size(K));
+M21_f = M12_f;
+M22_f = cos(2*PHI).^2 + xf * sin(2*PHI).^2;
+M23_f = (1 - xf) * cos(2*PHI) .* sin(2*PHI);
+M24_f = zeros(size(K));
+M31_f = M13_f;
+M32_f = M23_f;
+M33_f = sin(2*PHI).^2 + xf * cos(2*PHI).^2;
+M34_f = zeros(size(K));
+M41_f = zeros(size(K));
+M42_f = zeros(size(K));
+M43_f = zeros(size(K));
+M44_f = xf * ones(size(K));
+
+% Apply mask
+M_f_elements = {M11_f, M12_f, M13_f, M14_f, ...
+                M21_f, M22_f, M23_f, M24_f, ...
+                M31_f, M32_f, M33_f, M34_f, ...
+                M41_f, M42_f, M43_f, M44_f};
+for i = 1:16
+    M_f_elements{i} = M_f_elements{i} .* mask;
+    M_f_elements{i}(~mask) = NaN;
+end
+
+% Plot Figure S1
+figure('Name', 'Figure S1', 'NumberTitle', 'off');
+for i = 1:4
+    for j = 1:4
+        subplot(4,4,(i-1)*4 + j);
+        imagesc(kx, ky, M_f_elements{(i-1)*4 + j});
+        axis square; colormap('jet'); colorbar;
+        title(sprintf('M_{%d%d}', i, j));
+        xlabel('k_x'); ylabel('k_y');
+        set(gca, 'YDir', 'normal');
+    end
+end
+sgtitle('Figure S1: Mf for Tight Focusing (NA 0.8-0.92)');
+
+% WPC parameters
+dwpc = 0.5; delta_wpc = pi/4;
+M_wpc = [1, dwpc, 0, 0;
+         dwpc, 1, 0, -sin(delta_wpc);
+         0, 0, sqrt(1 - dwpc^2)*cos(delta_wpc), 0;
+         0, sin(delta_wpc), 0, cos(delta_wpc)];
+
+% Combined M = Mf * Mwpc
+M_elements = cell(4,4);
+for i = 1:N
+    for j = 1:N
+        phi = PHI(i,j);
+        Mf = [1, df*cos(2*phi), df*sin(2*phi), 0;
+              df*cos(2*phi), cos(2*phi)^2 + xf*sin(2*phi)^2, (1-xf)*cos(2*phi)*sin(2*phi), 0;
+              df*sin(2*phi), (1-xf)*cos(2*phi)*sin(2*phi), sin(2*phi)^2 + xf*cos(2*phi)^2, 0;
+              0, 0, 0, xf];
+        M = Mf * M_wpc;
+        for r = 1:4
+            for c = 1:4
+                if i == 1 && j == 1
+                    M_elements{r,c} = zeros(N,N);
+                end
+                M_elements{r,c}(i,j) = M(r,c);
+            end
+        end
+    end
+end
+
+% Apply mask to combined M
+for i = 1:4
+    for j = 1:4
+        M_elements{i,j} = M_elements{i,j} .* mask;
+        M_elements{i,j}(~mask) = NaN;
+    end
+end
+
+% Plot Figure S2
+figure('Name', 'Figure S2', 'NumberTitle', 'off');
+for i = 1:4
+    for j = 1:4
+        subplot(4,4,(i-1)*4 + j);
+        imagesc(kx, ky, M_elements{i,j});
+        axis square; colormap('jet'); colorbar;
+        title(sprintf('M_{%d%d}', i, j));
+        xlabel('k_x'); ylabel('k_y');
+        set(gca, 'YDir', 'normal');
+    end
+end
+sgtitle('Figure S2: Combined Mf × Mwpc (λ = 530 nm)');
+\end{lstlisting}
+
+
+
+\newpage
+\subsubsection{Results}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{S1 real.jpg}
+    \caption{Mueller matrix characterization of spin orbit interaction due to tight focusing.}
+    \label{S1}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{S2 real.jpg}
+    \caption{Theoretical Mueller matrix of the waveguided plasmonic crystal}
+    \label{S2}
+\end{figure}
+
+
+
+
+\end{document}
